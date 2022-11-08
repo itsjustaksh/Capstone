@@ -13,9 +13,17 @@ After Python is installed, there are a few required libraries to install. Insert
 
    `pip install opencv-python`
 
+   Alternatively: 
+   
+   `python -m pip install opencv-python`
+
 2. NumPy - Matrix computing
 
    `pip install numpy`
+
+   Alternatively:
+
+   `python -m pip install numpy`
 
 # Running The Application
 

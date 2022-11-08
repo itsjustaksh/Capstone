@@ -52,9 +52,7 @@ def display_images(images):
         i += 1
 
 
-def main(is_test=False, filename=None):
-    is_test = True
-    filename = "lane_test.png"
+def main(is_test: bool = False, filename=None):
     frame = set_capture(is_test, filename)
 
     while True:
@@ -69,4 +67,4 @@ def main(is_test=False, filename=None):
 if __name__ == '__main__':
     is_test = True
     filename = "lane_test.png"
-    main()
+    main(is_test, filename)
