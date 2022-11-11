@@ -52,12 +52,19 @@ def display_images(images):
         i += 1
 
 
+def crop_image(frame):
+    coords = np.nonzero(frame)
+    cropped = frame[np.min(coords[0]):540, 0:960]
+    return cropped
+
+
 def main(is_test: bool = False, filename=None):
     frame = set_capture(is_test, filename)
 
     while True:
         mask, mask_canny = white_and_yellow_mask(frame)
-        display_images([frame, mask, mask_canny])
+        cropped = crop_image(mask)
+        display_images([frame, mask, mask_canny, cropped])
 
         # When q is pressed, program stops running
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -66,5 +73,5 @@ def main(is_test: bool = False, filename=None):
 
 if __name__ == '__main__':
     is_test = True
-    filename = "lane_test.png"
+    filename = "image_lane_c.jpg"
     main(is_test, filename)
