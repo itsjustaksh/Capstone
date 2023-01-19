@@ -60,7 +60,7 @@ def main(is_test: bool = False, filename=None):
         display_images([frame, mask, mask_canny])
 
         # When q is pressed, program stops running
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(1) & 0xFF == ord('o'):
             break
 
 
