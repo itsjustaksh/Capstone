@@ -68,7 +68,7 @@ def main(is_test: bool = False, filename=None, writeToFile=False):
             if cv2.waitKey(1) & 0xFF == ord('o'):
                 break
     else:
-        cv2.imwrite(destFolder + filename, mask)
+        cv2.imwrite(destFolder + 'result_' + filename, mask)
 
 
 if __name__ == '__main__':
