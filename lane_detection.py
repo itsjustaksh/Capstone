@@ -66,5 +66,5 @@ def main(is_test: bool = False, filename=None):
 
 if __name__ == '__main__':
     is_test = True
-    filename = "lane_test.png"
+    filename = "Demo.jpg"
     main(is_test, filename)
