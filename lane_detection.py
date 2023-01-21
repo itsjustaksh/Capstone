@@ -54,14 +54,18 @@ def display_images(images):
 
 def main(is_test: bool = False, filename=None):
     frame = set_capture(is_test, filename)
+    mask, mask_canny = white_and_yellow_mask(frame)
+    #display_images([frame, mask, mask_canny])
+    cv2.imwrite("threshold_demo.jpg", mask)
 
-    while True:
-        mask, mask_canny = white_and_yellow_mask(frame)
-        display_images([frame, mask, mask_canny])
+    # while True:
+    #mask, mask_canny = white_and_yellow_mask(frame)
+    #display_images([frame, mask, mask_canny])
+    #cv2.imwrite("/test_data/threshold_demo.jpg", mask)
 
-        # When q is pressed, program stops running
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+    # When q is pressed, program stops running
+    # if cv2.waitKey(1) & 0xFF == ord('q'):
+    # break
 
 
 if __name__ == '__main__':
