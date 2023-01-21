@@ -51,20 +51,34 @@ def display_images(images):
         cv2.imshow((str)(i), image)
         i += 1
 
+    
 
-def main(is_test: bool = False, filename=None):
+
+def main(is_test: bool = False, filename=None, writeToFile=False):
+    
     frame = set_capture(is_test, filename)
+    mask, mask_canny = white_and_yellow_mask(frame)
+    destFolder = 'result_images/'
 
-    while True:
-        mask, mask_canny = white_and_yellow_mask(frame)
-        display_images([frame, mask, mask_canny])
+    if not writeToFile:
+        while True:
+            display_images([frame, mask, mask_canny])
 
-        # When q is pressed, program stops running
-        if cv2.waitKey(1) & 0xFF == ord('o'):
-            break
+            # When q is pressed, program stops running
+            if cv2.waitKey(1) & 0xFF == ord('o'):
+                break
+    else:
+        cv2.imwrite(destFolder + filename, mask)
 
 
 if __name__ == '__main__':
     is_test = True
-    filename = "lane_test.png"
-    main(is_test, filename)
+    writeToFile = True
+
+    if not writeToFile:
+        filename = "lane_test.png"
+        main(is_test, filename)
+    else: 
+        srcDir = 'test_data/'
+        for pic in os.listdir(srcDir):
+            main(is_test, pic, writeToFile)
