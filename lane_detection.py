@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import os
+import glob
+from PIL import Image
 
 
 def set_capture(is_test, filename=None):
@@ -53,10 +55,16 @@ def display_images(images):
 
 
 def main(is_test: bool = False, filename=None):
-    frame = set_capture(is_test, filename)
-    mask, mask_canny = white_and_yellow_mask(frame)
-    #display_images([frame, mask, mask_canny])
-    cv2.imwrite("threshold_demo.jpg", mask)
+    #frame = set_capture(is_test, filename)
+    image_list = []
+    for filename in glob.glob('asphalt/*.jpg'):
+        im = cv2.imread(filename)
+        image_list.append(im)
+    counter = 1
+    for image in image_list:
+        mask, mask_canny = white_and_yellow_mask(image)
+        cv2.imwrite("thresholded_image_" + str(counter) + ".jpg", mask)
+        counter += 1
 
     # while True:
     #mask, mask_canny = white_and_yellow_mask(frame)
