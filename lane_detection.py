@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import os
+from pycocotools.coco import COCO
+import numpy as np
 
 
 def set_capture(is_test, filename=None):
@@ -17,7 +19,33 @@ def set_capture(is_test, filename=None):
 
     # Return frame being read from file or camera
     return frame
+def labels_to_mask():
+    # Path to COCO annotations file and images directory
+    annFile = 'annotations/instances_val2017.json'
+    imgDir = 'val2017'
 
+    # Initialize COCO API
+    coco = COCO(annFile)
+
+    # Get category IDs for the classes you want to extract masks for
+    catIds = coco.getCatIds(catNms=['person', 'car'])
+
+    # Load annotations and iterate over images
+    anns = coco.loadAnns(coco.getAnnIds(catIds=catIds))
+    for ann in anns:
+        # Load image
+        img = cv2.imread(os.path.join(imgDir, coco.loadImgs(ann['image_id'])[0]['file_name']))
+        
+        # Create binary mask from segmentation polygons
+        mask = np.zeros((img.shape[0], img.shape[1]), dtype=np.uint8)
+        for seg in ann['segmentation']:
+            seg = [int(x) for x in seg]
+            poly = np.array(seg).reshape((-1, 2))
+            cv2.fillPoly(mask, [poly], 1)
+        
+        # Save mask as image
+        mask_path = os.path.join('masks', coco.loadImgs(ann['image_id'])[0]['file_name'][:-4] + '_' + coco.loadCats(ann['category_id'])[0]['name'] + '.png')
+        cv2.imwrite(mask_path, mask * 255)
 
 def white_and_yellow_mask(frame):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HLS)
@@ -50,6 +78,7 @@ def display_images(images):
     for image in images:
         cv2.imshow((str)(i), image)
         i += 1
+
 
 
 def main(is_test: bool = False, filename=None):
