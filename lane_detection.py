@@ -2,8 +2,9 @@ import cv2
 import numpy as np
 import os
 from pycocotools.coco import COCO
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import io
+from PIL import Image
 
 
 def set_capture(is_test, filename=None):
@@ -20,45 +21,20 @@ def set_capture(is_test, filename=None):
 
     # Return frame being read from file or camera
     return frame
+
 def labels_to_mask():
-    # Path to COCO annotations file and images directory
-    annFile = 'labeled_data/test/_annotations.coco.json'
-    imgDir = 'labeled_data/test'
-
-    # Initialize COCO API
-    coco = COCO(annFile)
-
-    # Get category IDs for the classes you want to extract masks for
-    catIds = coco.getCatIds(catNms=['Lanes', 'Double Yellow Line', 'Single White Line', 'Single Yellow Line'])
-
-    imgIds = coco.getImgIds(catIds=catIds );
-    imgIds = coco.getImgIds(imgIds = imgIds[0])
-    img = coco.loadImgs(imgIds[np.random.randint(0,len(imgIds))])[0]
-    I = io.imread('labeed_data/test/'+img['file_name'])
-
-    plt.imshow(I); plt.axis('off')
-    annIds = coco.getAnnIds(imgIds=img['id'], catIds=catIds, iscrowd=None)
-    anns = coco.loadAnns(annIds)
-    coco.showAnns(anns)
-
-    # Load annotations and iterate over images
-    #anns = coco.loadAnns(coco.getAnnIds(catIds=catIds))
-    """
-    for ann in anns:
-        # Load image
-        img = cv2.imread(os.path.join(imgDir, coco.loadImgs(ann['image_id'])[0]['file_name']))
-        
-        # Create binary mask from segmentation polygons
-        mask = np.zeros((img.shape[0], img.shape[1]), dtype=np.uint8)
-        for seg in ann['segmentation']:
-            seg = [int(x) for x in seg]
-            poly = np.array(seg).reshape((-1, 2))
-            cv2.fillPoly(mask, [poly], 1)
-        
-        # Save mask as image
-        mask_path = os.path.join('masks', coco.loadImgs(ann['image_id'])[0]['file_name'][:-4] + '_' + coco.loadCats(ann['category_id'])[0]['name'] + '.png')
-        cv2.imwrite(mask_path, mask * 255)
-        """
+    coco = COCO("labeled_data/test/_annotations.coco.json")
+    image_ids = coco.getImgIds()
+    for id in image_ids:
+        annids = coco.getAnnIds(imgIds=[id])
+        image_coco = coco.loadImgs(ids=[id])
+        filename = image_coco[0]['file_name']
+        path = 'labeled_data/test/' + filename
+        image = np.array(Image.open(path))
+        plt.imshow(image)
+        anns = coco.loadAnns(annids)
+        coco.showAnns(anns)
+        plt.show()    
 
 def white_and_yellow_mask(frame):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HLS)
