@@ -2,7 +2,8 @@ import cv2
 import numpy as np
 import os
 from pycocotools.coco import COCO
-import numpy as np
+import matplotlib as plt
+import io
 
 
 def set_capture(is_test, filename=None):
@@ -21,17 +22,28 @@ def set_capture(is_test, filename=None):
     return frame
 def labels_to_mask():
     # Path to COCO annotations file and images directory
-    annFile = 'annotations/instances_val2017.json'
-    imgDir = 'val2017'
+    annFile = 'labeled_data/test/_annotations.coco.json'
+    imgDir = 'labeled_data/test'
 
     # Initialize COCO API
     coco = COCO(annFile)
 
     # Get category IDs for the classes you want to extract masks for
-    catIds = coco.getCatIds(catNms=['person', 'car'])
+    catIds = coco.getCatIds(catNms=['Lanes', 'Double Yellow Line', 'Single White Line', 'Single Yellow Line'])
+
+    imgIds = coco.getImgIds(catIds=catIds );
+    imgIds = coco.getImgIds(imgIds = imgIds[0])
+    img = coco.loadImgs(imgIds[np.random.randint(0,len(imgIds))])[0]
+    I = io.imread('labeed_data/test/'+img['file_name'])
+
+    plt.imshow(I); plt.axis('off')
+    annIds = coco.getAnnIds(imgIds=img['id'], catIds=catIds, iscrowd=None)
+    anns = coco.loadAnns(annIds)
+    coco.showAnns(anns)
 
     # Load annotations and iterate over images
-    anns = coco.loadAnns(coco.getAnnIds(catIds=catIds))
+    #anns = coco.loadAnns(coco.getAnnIds(catIds=catIds))
+    """
     for ann in anns:
         # Load image
         img = cv2.imread(os.path.join(imgDir, coco.loadImgs(ann['image_id'])[0]['file_name']))
@@ -46,6 +58,7 @@ def labels_to_mask():
         # Save mask as image
         mask_path = os.path.join('masks', coco.loadImgs(ann['image_id'])[0]['file_name'][:-4] + '_' + coco.loadCats(ann['category_id'])[0]['name'] + '.png')
         cv2.imwrite(mask_path, mask * 255)
+        """
 
 def white_and_yellow_mask(frame):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HLS)
@@ -82,6 +95,7 @@ def display_images(images):
 
 
 def main(is_test: bool = False, filename=None):
+    """
     frame = set_capture(is_test, filename)
 
     while True:
@@ -91,6 +105,8 @@ def main(is_test: bool = False, filename=None):
         # When q is pressed, program stops running
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+    """
+    labels_to_mask()
 
 
 if __name__ == '__main__':
