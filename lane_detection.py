@@ -23,13 +23,13 @@ def set_capture(is_test, filename=None):
     return frame
 
 def labels_to_mask():
-    coco = COCO("labeled_data/test/_annotations.coco.json")
+    coco = COCO("labeled_data_colored/train/_annotations.coco.json")
     image_ids = coco.getImgIds()
     for id in image_ids:
         annids = coco.getAnnIds(imgIds=[id])
         image_coco = coco.loadImgs(ids=[id])
         filename = image_coco[0]['file_name']
-        path = 'labeled_data/test/' + filename
+        path = 'labeled_data_colored/train/' + filename
         image = np.array(Image.open(path))
         plt.imshow(image)
         anns = coco.loadAnns(annids)
