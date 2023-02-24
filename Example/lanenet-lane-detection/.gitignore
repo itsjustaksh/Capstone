@@ -1,3 +1,4 @@
+# IDE configs
 .idea/
 .vscode/
 
@@ -6,3 +7,6 @@ log/
 
 # python cache
 *__pycache__*
+
+# Model checkpoints
+model/tusimple/bisenetv2_lanenet/*
