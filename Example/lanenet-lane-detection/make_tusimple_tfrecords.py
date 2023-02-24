@@ -13,7 +13,6 @@ from local_utils.log_util import init_logger
 
 LOG = init_logger.get_logger(log_file_name_prefix='generate_tusimple_tfrecords')
 
-
 def generate_tfrecords():
     """
 
