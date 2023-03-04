@@ -194,8 +194,7 @@ custorm data. So I add an option in testing scripts to disable this feature when
 mask image directly upon source image
 
 ```
-python tools/test_lanenet.py --weights_path /PATH/TO/YOUR/CKPT_FILE_PATH 
---image_path ./data/custom_test_image/test.png --with_lane_fit 0
+python tools/test_lanenet.py --weights_path /PATH/TO/YOUR/CKPT_FILE_PATH --image_path ./data/custom_test_image/test.png --with_lane_fit 0
 ```
 
 Before you test the example custom data remember to adjust dbscan cluster params following instruction above and the test
