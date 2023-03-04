@@ -125,7 +125,7 @@ def gen_train_sample(src_dir, b_gt_image_dir, i_gt_image_dir, image_dir):
             image = cv2.imread(image_path, cv2.IMREAD_COLOR)
 
             if b_gt_image is None or image is None or i_gt_image is None:
-                print('图像对: {:s}损坏'.format(image_name))
+                print('Image pair: {:s} corrupted'.format(image_name))
                 continue
             else:
                 info = '{:s} {:s} {:s}'.format(image_path, binary_gt_image_path, instance_gt_image_path)
