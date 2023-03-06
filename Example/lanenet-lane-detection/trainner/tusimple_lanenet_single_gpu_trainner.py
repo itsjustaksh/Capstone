@@ -68,7 +68,7 @@ class LaneNetTusimpleTrainer(object):
             self._warmup_epoches = 0
 
         # define tensorflow session
-        sess_config = tf.ConfigProto(allow_soft_placement=True)
+        sess_config = tf.ConfigProto()
         sess_config.gpu_options.per_process_gpu_memory_fraction = self._cfg.GPU.GPU_MEMORY_FRACTION
         sess_config.gpu_options.allow_growth = self._cfg.GPU.TF_ALLOW_GROWTH
         sess_config.gpu_options.allocator_type = 'BFC'
