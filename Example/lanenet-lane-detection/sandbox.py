@@ -1,7 +1,8 @@
 import json
+import tensorflow as tf
 
-path = r"C:\Users\googl\Documents\Anything Relevant\University\4th Year\Project\pictureswithannotationfile\labels.json"
-with open(path, 'r') as file:
-        dict = json.load(file)
+metaFile = 'tusimple_train_miou=0.2836.ckpt-8.meta'
+ckpt = 'model/tusimple/bisenetv2_lanenet/{}'
 
-print(dict.keys())
+sess = tf.Session()
+saver = tf.train.latest_checkpoint(ckpt)
