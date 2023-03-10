@@ -33,7 +33,7 @@ extract code is `86sd`.
 You can test a single image on the trained model as follows
 
 ```
-python tools/test_lanenet.py --weights_path /PATH/TO/YOUR/CKPT_FILE_PATH --image_path ./data/tusimple_test_image/0.jpg
+python test_lanenet.py --weights_path model/tusimple/bisenetv2_lanenet/tusimple_train_miou=0.2836.ckpt-8.index --image_path ./data/tusimple_test_image/0.jpg
 ```
 The results are as follows:
 
