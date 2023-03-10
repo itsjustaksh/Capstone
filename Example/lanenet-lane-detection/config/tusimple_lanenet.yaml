@@ -53,26 +53,26 @@ TRAIN:
     TBOARD_SAVE_DIR: 'tboard/tusimple/'
     MODEL_PARAMS_CONFIG_FILE_NAME: "model_train_config.json"
     RESTORE_FROM_SNAPSHOT:
-        ENABLE: False
-        SNAPSHOT_PATH: ''
+        ENABLE: True
+        SNAPSHOT_PATH: 'model/tusimple/bisenetv2_lanenet'
     SNAPSHOT_EPOCH: 8
-    BATCH_SIZE: 32
+    BATCH_SIZE: 4
     VAL_BATCH_SIZE: 4
-    EPOCH_NUMS: 905
+    EPOCH_NUMS: 40
     WARM_UP:
         ENABLE: True
         EPOCH_NUMS: 8
     FREEZE_BN:
         ENABLE: False
     COMPUTE_MIOU:
-        ENABLE: True
+        ENABLE: False
         EPOCH: 1
     MULTI_GPU:
         ENABLE: False
         GPU_DEVICES: ['0', '1']
         CHIEF_DEVICE_INDEX: 0
 SOLVER:
-    LR: 0.001
+    LR: 0.00001
     LR_POLICY: 'poly'
     LR_POLYNOMIAL_POWER: 0.9
     OPTIMIZER: 'sgd'
@@ -85,7 +85,7 @@ SOLVER:
         SCORE_THRESH: 0.65
         MIN_SAMPLE_NUMS: 65536
 GPU:
-    GPU_MEMORY_FRACTION: 0.8
+    GPU_MEMORY_FRACTION: 0.7
     TF_ALLOW_GROWTH: True
 POSTPROCESS:
     MIN_AREA_THRESHOLD: 100

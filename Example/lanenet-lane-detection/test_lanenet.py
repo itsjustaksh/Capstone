@@ -111,7 +111,7 @@ def test_lanenet(image_path, weights_path, with_lane_fit=True):
     saver = tf.train.Saver(variables_to_restore)
 
     with sess.as_default():
-        saver.restore(sess=sess, save_path=weights_path)
+        saver.restore(sess=sess, save_path=tf.train.latest_checkpoint(weights_path))
 
         t_start = time.time()
         loop_times = 500
@@ -122,7 +122,7 @@ def test_lanenet(image_path, weights_path, with_lane_fit=True):
             )
         t_cost = time.time() - t_start
         t_cost /= loop_times
-        LOG.info('Single imgae inference cost time: {:.5f}s'.format(t_cost))
+        LOG.info('Single image inference cost time: {:.5f}s'.format(t_cost))
 
         postprocess_result = postprocessor.postprocess(
             binary_seg_result=binary_seg_image[0],
