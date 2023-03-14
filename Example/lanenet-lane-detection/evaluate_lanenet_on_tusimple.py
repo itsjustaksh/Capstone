@@ -72,7 +72,7 @@ def eval_lanenet(src_dir, weights_path, save_dir):
 
     with sess.as_default():
 
-        saver.restore(sess=sess, save_path=weights_path)
+        saver.restore(sess=sess, save_path=tf.train.latest_checkpoint(weights_path))
 
         image_list = glob.glob('{:s}/**/*.jpg'.format(src_dir), recursive=True)
         avg_time_cost = []
@@ -100,7 +100,7 @@ def eval_lanenet(src_dir, weights_path, save_dir):
                 LOG.info('Mean inference time every single image: {:.5f}s'.format(np.mean(avg_time_cost)))
                 avg_time_cost.clear()
 
-            input_image_dir = ops.split(image_path.split('clips')[1])[0][1:]
+            input_image_dir = ops.split(image_path)[0][1:]
             input_image_name = ops.split(image_path)[1]
             output_image_dir = ops.join(save_dir, input_image_dir)
             os.makedirs(output_image_dir, exist_ok=True)
