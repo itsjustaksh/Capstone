@@ -10,3 +10,6 @@ log/
 
 # Model checkpoints
 model/tusimple/bisenetv2_lanenet/*
+
+# Outputs
+output/**
