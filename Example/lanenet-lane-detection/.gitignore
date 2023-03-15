@@ -13,3 +13,7 @@ model/tusimple/bisenetv2_lanenet/*
 
 # Outputs
 output/**
+
+# Input data
+data/test_set
+data/test_set/**
