@@ -58,7 +58,8 @@ class LaneNetTusimpleTrainer(object):
         self._optimizer_mode = self._cfg.SOLVER.OPTIMIZER.lower()
 
         if self._cfg.TRAIN.RESTORE_FROM_SNAPSHOT.ENABLE:
-            self._initial_weight = self._cfg.TRAIN.RESTORE_FROM_SNAPSHOT.SNAPSHOT_PATH
+            self._initial_weight = tf.train.latest_checkpoint(self._cfg.TRAIN.RESTORE_FROM_SNAPSHOT.SNAPSHOT_PATH)
+            self._weight_path_format = self._cfg.TRAIN.RESTORE_FROM_SNAPSHOT.SNAPSHOT_PATH
         else:
             self._initial_weight = None
         if self._cfg.TRAIN.WARM_UP.ENABLE:
@@ -229,19 +230,19 @@ class LaneNetTusimpleTrainer(object):
         self._sess.run(tf.local_variables_initializer())
         if self._cfg.TRAIN.RESTORE_FROM_SNAPSHOT.ENABLE:
             try:
-                LOG.info('=> Restoring weights from: {:s} ... '.format(self._initial_weight))
+                LOG.info('=> Restoring weights from: {:s} ... '.format(self._weight_path_format))
                 self._loader.restore(self._sess, self._initial_weight)
                 global_step_value = self._sess.run(self._global_step)
                 remain_epoch_nums = self._train_epoch_nums - math.floor(global_step_value / self._steps_per_epoch)
                 epoch_start_pt = self._train_epoch_nums - remain_epoch_nums
             except OSError as e:
                 LOG.error(e)
-                LOG.info('=> {:s} does not exist !!!'.format(self._initial_weight))
+                LOG.info('=> {:s} does not exist !!!'.format(self._weight_path_format))
                 LOG.info('=> Now it starts to train LaneNet from scratch ...')
                 epoch_start_pt = 1
             except Exception as e:
                 LOG.error(e)
-                LOG.info('=> Can not load pretrained model weights: {:s}'.format(self._initial_weight))
+                LOG.info('=> Can not load pretrained model weights: {:s}'.format(self._weight_path_format))
                 LOG.info('=> Now it starts to train LaneNet from scratch ...')
                 epoch_start_pt = 1
         else:
